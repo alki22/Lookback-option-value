@@ -56,4 +56,4 @@ def Montecarlo(S0, u, d, interest_rate, n_steps, n_sims):
 	return v0
 
 # Example
-print(Montecarlo(20, 1.1, 0.90, 0.03, 30, 100000000))
+print(Montecarlo(1, 1.1, 0.9, 0.025, 30, 1000000))

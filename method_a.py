@@ -1,12 +1,5 @@
-import random
-
 from math import sqrt
-
-def binomial(p):
-	return int(random.random() < p)
-
-def neutral_risk_prob(u, d, interest_rate):
-	return ((1 + interest_rate - d) / (u - d))
+from prob import *
 
 def lookback_payoff(S0, u, d, interest_rate, n_steps):
 	p = neutral_risk_prob(u, d, interest_rate)
@@ -27,14 +20,6 @@ def lookback_payoff(S0, u, d, interest_rate, n_steps):
 
 	return St - min_value
 
-def sample_variance(sample, mean):
-	total = 0.0
-	for element in sample:
-		total += ((element - mean)**2)
-
-	return sqrt(total / len(sample))
-
-
 def Montecarlo(S0, u, d, interest_rate, n_steps, n_sims):
 	values = 0.0
 	sample = []
@@ -47,13 +32,9 @@ def Montecarlo(S0, u, d, interest_rate, n_steps, n_sims):
 	mean = values / n_sims
 	variance = sample_variance(sample, mean)
 	error_rate = (variance / sqrt(n_sims))
+	
 	print(error_rate)
-	if error_rate < 0.001:
-		print("Error rate < 0.001")
-
+	
 	v0 = (1 / ((1 + interest_rate) ** n_steps)) * mean
 
 	return v0
-
-# Example
-print(Montecarlo(1, 1.1, 0.9, 0.025, 30, 1000000))

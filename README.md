@@ -41,7 +41,7 @@ Para comparar el funcionamiento de ambos métodos, realizaremos una prueba para 
 | Método  |      Resultado      |  Tiempo de ejecución | Uso de memoria
 |----------|:-------------:|------:|----:|
 | Montecarlo |  0.5917354729923145 | 1m56.561s | 530,073 bytes |
-| Árbol binomial |    0.5848972562822754   | 0.273s  | |
+| Árbol binomial |    0.5848972562822754   | 0.273s  | 734,824 bytes |
 
 
 

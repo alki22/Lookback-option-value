@@ -46,18 +46,26 @@ class BinomialTree:
 				if node == 0 and level == 0:
 					self.tree[0][0].minList.append((s0, 1))
 
-				for minimum in current_node.minList:
-					for son in current_node.children:
+				for son in current_node.children:
+					for minimum in current_node.minList:
 						son_Vt = self.tree[level + 1][son].Vt
 						son_index = current_node.children.index(son)
 						p_or_q = (1 - son_index) * p + (0 + son_index) * q
+						equal_min = [x for x in self.tree[level + 1][son].minList if x[0] == minimum[0]]
+						
+						if any(equal_min):
+							equal_min_index = self.tree[level + 1][son].minList.index(equal_min[0])
+							prev_min = self.tree[level + 1][son].minList.pop(equal_min_index)
+							new_min = (prev_min[0], prev_min[1] + minimum[1] * p_or_q)
+							self.tree[level + 1][son].minList.append(new_min)
 
-						if minimum[0] < son_Vt:
-							self.tree[level + 1][son].minList.append(
-								(minimum[0], minimum[1] * p_or_q))
 						else:
-							self.tree[level + 1][son].minList.append(
-								(son_Vt, minimum[1] * p_or_q))
+							if minimum[0] <= son_Vt:
+								self.tree[level + 1][son].minList.append(
+									(minimum[0], minimum[1] * p_or_q))
+							else:
+								self.tree[level + 1][son].minList.append(
+									(son_Vt, minimum[1] * p_or_q))
 
 	def Vt_expected_value(self):
 		leaves = self.levels - 1
@@ -66,8 +74,8 @@ class BinomialTree:
 		# μ = Σ xi * pi
 		for leaf in self.tree[leaves]:
 			for minimum in leaf.minList:
-				expected_value += minimum[0] * minimum[1]
-		
+				payoff = (leaf.Vt - minimum[0]) * minimum[1]
+				expected_value += payoff
 		return expected_value
 
 	def calculate_bonus(self, interest_rate):

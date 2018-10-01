@@ -33,7 +33,7 @@ def Montecarlo(S0, u, d, interest_rate, n_steps, n_sims):
 	variance = sample_variance(sample, mean)
 	error_rate = (variance / sqrt(n_sims))
 	
-	print(error_rate)
+	print("Error rate: " + str(error_rate))
 	
 	v0 = (1 / ((1 + interest_rate) ** n_steps)) * mean
 

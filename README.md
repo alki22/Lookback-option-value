@@ -9,7 +9,8 @@ Además se comparará la eficiencia de ambos según distintos criterios.
 
 ## Métodos utilizados
 ### Método de Montecarlo
-Consiste en generar trayectorias aleatorias para aproximar la prima de la opción en base a _S0_. Esto mediante variables aleatorias binomiales, que en caso de ser 1 hacen que el precio suba y 0 que baje, para luego aproximar la esperanza del valor del subyacente en base a los valores obtenidos y calcular la prima de la opción en _t=0_, dada por __1/(1+i)^n * E(Vt)__
+Consiste en generar trayectorias aleatorias para aproximar la prima de la opción en base a _S0_. Esto mediante variables aleatorias binomiales, que en caso de ser 1 hacen que el precio suba y 0 que baje, para luego aproximar la esperanza del valor del subyacente en base a los valores obtenidos y calcular la prima de la opción en _t=0_, dada por __1/(1+i)^n * E(Vt)__.
+Se modificó además el algoritmo para calcular la media y varianza recursivamente, deteniéndose éste cuando el error de las simulaciones sea menor a 0.001
 
 ### Método de árbol binomial
 Para este método se diseñó una estructura para implementar al árbol binomial y a sus nodos. Consiste en crear un árbol de _n_ niveles, con _n_ nodos por nivel, esto da un total de _n(n+1)/2_ nodos. Luego llenaremos los valores para cada nodo en cada nivel con el valor del subyacente correspondiente. Luego recorreremos con _BFS_ el arbol, llenando para cada nodo una lista con los valores mínimos del subyacente y su probabilidad de ocurrir obtenidos de sus padres en el árbol. Finalmente obtenemos la esperanza para el valor de _Vt_ y obtenemos _V0_ aplicando la misma fórmula que en el método de Montecarlo.
@@ -38,15 +39,15 @@ Para comparar el funcionamiento de ambos métodos, realizaremos una prueba para 
 
 ### Resultados
 
-| Método  |      Resultado      |  Tiempo de ejecución | Uso de memoria
+| Método  |      Resultado      |  Tiempo de ejecución | N° de simulaciones
 |----------|:-------------:|------:|----:|
-| Montecarlo |  0.5917354729923145 | 1m56.561s | 530,073 bytes |
-| Árbol binomial |    0.5848972562822754   | 0.273s  | 734,824 bytes |
+| Montecarlo |  0.5917354729923145 | 14.025s | 1185723 |
+| Árbol binomial |    0.5848972562822754   | 0.273s  | X |
 
 
 
 
 ## Conclusión
 Dados los resultados obtenidos, podemos concluir que:
-- El primer método es conveniente en cuanto a facilidad de programación. Sin embargo, cuando se busca obtener resultados con un margen de error muy pequeño, se requiere un número muy elevado de simulaciones. En este ejemplo, para obtener un margen de error menor a __0.001__ debieron realizarse __10000000 simulaciones__, tardando así más de 300 veces lo que tarda el método del árbol binomial para obtener un valor __aproximado__.
+- El primer método es conveniente en cuanto a facilidad de programación. Sin embargo, cuando se busca obtener resultados con un margen de error muy pequeño, se requiere un número muy elevado de simulaciones. En este ejemplo, para obtener un margen de error menor a __0.001__ debieron realizarse __1285723 simulaciones__, tardando así aproximadamente 52 veces lo que tarda el método del árbol binomial para obtener un valor __aproximado__. Sin embargo, considerando el tiempo que se tardó en implementar ambos métodos, si el margen de error utilizado se ajusta bien a nuestro problema, el primer método es más conveniente en este caso.
 - El segundo método, si bien requirió mucho más tiempo en cuanto a implementación de las estructuras y sus algoritmos, prueba ser mucho más eficiente y escalable en una cantidad más elevada de períodos, con un tiempo de ejecución mucho menor. Obteniendo además el __valor exacto__.
